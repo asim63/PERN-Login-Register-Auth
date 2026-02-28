@@ -75,7 +75,9 @@ router.post("/login", async (req, res) => {
   }
   const token = generateToken(user.rows[0].id);
   res.cookie("token", token, cookieOptions);
-  return res.status(200).json({ user: user.rows[0] });
+  res.json({
+    user: { id: userData.id, name: userData.name, email: userData.email },
+  });
 });
 
 router.get("/me", protect, async (req, res) => {
