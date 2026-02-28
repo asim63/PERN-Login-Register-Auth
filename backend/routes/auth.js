@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import pool from "../config/db.js";
+import { protect } from "../middleware/auth.js";
 // import dotenv from "dotenv";
 
 // dotenv.config();
@@ -22,9 +23,9 @@ const generateToken = (id) => {
 };
 
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-  if (!username || !email || !password) {
+  if (!name || !email || !password) {
     return res
       .status(400)
       .json({ message: "Please provide all the required fields" });
@@ -42,7 +43,7 @@ router.post("/register", async (req, res) => {
 
   const newUser = await pool.query(
     "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email",
-    [username, email, hashedPassword],
+    [name, email, hashedPassword],
   );
 
   const token = generateToken(newUser.rows[0].id);
@@ -52,7 +53,7 @@ router.post("/register", async (req, res) => {
   return res.status(201).json({ user: newUser.rows[0] });
 });
 
-roeuter.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res
@@ -77,7 +78,7 @@ roeuter.post("/login", async (req, res) => {
   return res.status(200).json({ user: user.rows[0] });
 });
 
-router.get("/me", async (req, res) => {
+router.get("/me", protect, async (req, res) => {
   res.json(req.user);
   //return info of he logged in user from protect middleware
 });
