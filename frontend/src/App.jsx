@@ -10,10 +10,11 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
+import NotFound from "./components/notfound";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState("");
+  const [error] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,7 +48,13 @@ function App() {
             user ? <Navigate to="/" replace /> : <Login setUser={setUser} />
           }
         />
-        <Route path="/register" element={<Register setUser={setUser} />} />
+        <Route
+          path="/register"
+          element={
+            user ? <Navigate to="/" replace /> : <Register setUser={setUser} />
+          }
+        />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>
   );
