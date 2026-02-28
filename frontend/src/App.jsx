@@ -13,12 +13,13 @@ import Navbar from "./components/Navbar";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/auth/me", {
+        const res = await axios.get("/api/auth/me", {
           withCredentials: true,
         });
         setUser(res.data);
@@ -37,16 +38,16 @@ function App() {
 
   return (
     <Router>
-      <Navbar />
+      <Navbar user={user} setUser={setUser} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home user={user} error={error} />} />
         <Route
           path="/login"
           element={
             user ? <Navigate to="/" replace /> : <Login setUser={setUser} />
           }
         />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<Register setUser={setUser} />} />
       </Routes>
     </Router>
   );

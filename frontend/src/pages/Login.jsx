@@ -16,7 +16,7 @@ const Login = ({ setUser }) => {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", form, {
+      const res = await axios.post("/api/auth/login", form, {
         withCredentials: true,
       });
       setUser(res.data.user);
@@ -27,7 +27,7 @@ const Login = ({ setUser }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-[80vh] flex items-center justify-center bg-gray-100">
       <form className="bg-white p-6 rounded shadow-md" onSubmit={handleSubmit}>
         <h2 className="text-xl font-bold mb-4">Login</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
