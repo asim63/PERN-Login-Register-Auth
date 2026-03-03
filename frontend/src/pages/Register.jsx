@@ -20,8 +20,7 @@ const Register = ({ setUser }) => {
       const res = await axios.post("/api/auth/register", form, {
         withCredentials: true,
       });
-      setUser(res.data.user);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       setError(error.response?.data?.message || "Registration Failed");
     }

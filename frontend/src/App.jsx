@@ -51,7 +51,11 @@ function App() {
         <Route
           path="/register"
           element={
-            user ? <Navigate to="/" replace /> : <Register setUser={setUser} />
+            user ? (
+              <Navigate to="/login" replace />
+            ) : (
+              <Register setUser={setUser} />
+            )
           }
         />
         <Route path="/*" element={<NotFound />} />
